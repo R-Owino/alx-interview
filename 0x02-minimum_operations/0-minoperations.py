@@ -4,7 +4,7 @@ Contains a function minOperations()
 '''
 
 
-def minOperations(n: int) -> int:
+def minOperations(n):
     '''
     Calculates the fewest number of opeations needed to result in
     exactly n H characters
