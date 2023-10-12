@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 '''
 Contains a function minOperations()
 '''
 
 
-def minOperations(n):
+def minOperations(n: int) -> int:
     '''
     Calculates the fewest number of opeations needed to result in
     exactly n H characters
