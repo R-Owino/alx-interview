@@ -5,80 +5,63 @@ every 10 lines or on a keyboard interrupt
 """
 
 import sys
-import re
-from collections import defaultdict
-import signal
-from typing import Tuple, Optional, Dict
+import fileinput
 
 
-def parse_log_line(line: str) -> Optional[Tuple[str, str, int, int]]:
+def print_output(status_codes, file_size):
     """
-    Parse a log line and extract relevant information.
-
-    Args:
-        line (str): A log line in the specified format.
-
-    Returns:
-        Optional[Tuple[str, str, int, int]]: A tuple containing IP address,
-        date, status code, and file size, or None if the format doesn't match
+    Prints the result in the required format
     """
-    pattern = (
-        r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] '
-        r'"GET /projects/260 HTTP/1\.1" (\d+) (\d+)$'
-    )
-    match = re.match(pattern, line)
-    if match:
-        return match.groups()
-    return None
+    print(f"File size: {file_size}")
+    status_codes = dict(sorted(status_codes.items()))
+
+    for code, code_count in status_codes.items():
+        print(f"{code}: {code_count}")
 
 
-def print_metrics(total_size: int, status_code_counts: Dict[int, int]) -> None:
+def get_log():
     """
-    Print computed statistics based on total file size and status code counts.
-
-    Args:
-        total_size (int): Total file size.
-        status_code_counts (Dict[int, int]): dictionary containing status code
-        counts.
+    Gets the log from stdin
     """
-    print(f"File size: {total_size}")
-    for status_code in sorted(status_code_counts):
-        print(f"{status_code}: {status_code_counts[status_code]}")
+    file_size = 0
+    status_code = {}
+    track_state = False
+    try:
+        counter = 0
+        for lines in fileinput.input():
+            try:
+                lines = lines.rstrip("\n")
+                new_list = lines.split()
+
+                if len(new_list) != 9:
+                    continue
+
+                if not new_list[-1].isdigit() or not new_list[-2].isdigit():
+                    track_state = True
+                    continue
+
+                file_size += int(new_list[-1])
+                status_code[int(new_list[-2])] = status_code.get(
+                                                int(new_list[-2]), 0) + 1
+
+                counter += 1
+
+                if counter % 10 == 0:
+                    print_output(status_code, file_size)
+
+            except Exception as e:
+                raise ValueError(e)
+
+        if track_state is True:
+            raise ValueError("Not a digit")
+
+    except (KeyboardInterrupt, Exception) as e:
+        print_output(status_code, file_size)
+        sys.stderr.write("[stderr]: {}\n".format(e))
+        sys.exit(1)
+
+    print_output(status_code, file_size)
 
 
-def signal_handler(sig: int, frame) -> None:
-    """
-    Handle KeyboardInterrupt to print metrics and exit
-
-    Args:
-        sig (int): Signal number.
-        frame: Current stack frame.
-    """
-    print_metrics(total_size, status_code_counts)
-    sys.exit(0)
-
-
-total_size = 0
-status_code_counts = defaultdict(int)
-line_count = 0
-
-# Set up the KeyboardInterrupt (CTRL+C) signal handler
-signal.signal(signal.SIGINT, signal_handler)
-
-try:
-    for line in sys.stdin:
-        line = line.strip()
-        parsed_data = parse_log_line(line)
-        if parsed_data:
-            ip, date, status_code, file_size = parsed_data
-            total_size += int(file_size)
-            status_code_counts[int(status_code)] += 1
-            line_count += 1
-
-        if line_count % 10 == 0:
-            print_metrics(total_size, status_code_counts)
-
-except KeyboardInterrupt:
-    # Handle the case where the user interrupts the script with CTRL+C
-    print_metrics(total_size, status_code_counts)
-    sys.exit(0)
+if __name__ == '__main__':
+    get_log()
