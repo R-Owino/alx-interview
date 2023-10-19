@@ -2,4 +2,5 @@
 
 1. Pascal's Triangle
 2. LockBoxes
-3. Minimum operations 
+3. Minimum operations
+4. Log parsing 
