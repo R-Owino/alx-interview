@@ -3,4 +3,5 @@
 1. Pascal's Triangle
 2. LockBoxes
 3. Minimum operations
-4. Log parsing 
+4. Log parsing
+5. UTF-8 Validation 
