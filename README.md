@@ -4,4 +4,5 @@
 2. LockBoxes
 3. Minimum operations
 4. Log parsing
-5. UTF-8 Validation 
+5. UTF-8 Validation
+6. Star Wars API
