@@ -5,47 +5,36 @@
  */
 
 const request = require('request');
-const movieId = process.argv[2];
 
-if (!movieId || isNaN(movieId)) {
-  process.exit(1);
+function getJson (url) {
+  return new Promise((resolve, reject) => {
+    request({ url, json: true, followAllRedirects: true }, (error, response, body) => {
+      if (error) {
+        reject(error);
+      } else if (response.statusCode !== 200) {
+        reject(error);
+      } else {
+        resolve(body);
+      }
+    });
+  });
 }
 
-const url = `https://swapi-api.alx-tools.com/films/${movieId}`;
+if (process.argv.length === 3) {
+  const movieId = process.argv[2];
+  const url = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
 
-request(url, (error, res, body) => {
-  if (error) {
-    console.log(error);
-    return;
-  }
-
-  const json = JSON.parse(body);
-  const characters = json.characters;
-
-  const fetchCharacterInfo = (characterUrl) => {
-    return new Promise((resolve, reject) => {
-      request(characterUrl, (error, response, characterBody) => {
-        if (error) {
-          reject(error);
-        } else {
-          const characterData = JSON.parse(characterBody);
-          resolve(characterData.name);
-        }
-      });
-    });
-  };
-
-  const characterPromises = characters.map((character) => {
-    return fetchCharacterInfo(character);
-  });
-
-  Promise.all(characterPromises)
-    .then((characterNames) => {
-      characterNames.forEach((name, index) => {
-        console.log(`${index + 1}. ${name}`);
+  getJson(url)
+    .then(film => {
+      const characterPromises = film.characters.map(getJson);
+      return Promise.all(characterPromises);
+    })
+    .then(characters => {
+      characters.forEach(character => {
+        console.log(character.name);
       });
     })
-    .catch((error) => {
+    .catch(error => {
       console.log(error);
     });
-});
+}
