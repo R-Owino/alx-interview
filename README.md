@@ -5,4 +5,5 @@
 3. Minimum operations
 4. Log parsing
 5. UTF-8 Validation
-6. Star Wars API
+6. nqueens problem 
+7. Star Wars API
