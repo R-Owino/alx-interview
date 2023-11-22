@@ -18,7 +18,8 @@ The approach:
 
 2. Dynamic Programming
 - This is a way better option to optimize the program. It avoids 
-redundant work by storing and reusing solutions to subproblems
+redundant work by storing and reusing solutions to subproblems.
+
 \* The solution is faster due to optimized subproblem solving and memoization.
 
 - While both approaches are powerful for solving complex problems, dynamic programming is more efficient and that's what I used to solve this problem.
