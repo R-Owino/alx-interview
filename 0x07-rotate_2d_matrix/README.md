@@ -12,8 +12,8 @@ Problem instructions:
 
 The approach:
 - I achieved this by performing 2 operations on the matrix:
-    * Transpose the matrix - swap the elements at position (0, 1) with those at position (1, 0) for all 0 and 1. This turns rows to columns.
-    * Reverse each row - swap the elements at position (0, 1) with those at position (0, n-1-1), where n is the number of columns. This rotates the matrix 90&deg; clockwise.
+    * Transpose the matrix - swap the elements at position (i, j) with those at position (j, i) for all i and j. This turns rows to columns.
+    * Reverse each row - swap the elements at position (i, j) with those at position (i, n-i-j), where n is the number of columns. This rotates the matrix 90&deg; clockwise.
 
 Example:
 * Input: `[[1, 2, 3],[4, 5, 6],[7, 8, 9]]`
