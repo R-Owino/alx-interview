@@ -14,7 +14,7 @@ The approach:
 
 1. Recursion
 - Consider 2 possibilities at each step: either include a coin in the solution or exclude it.
-:thumbsdown: Using recursion results into an exponential time complexity and might not be efficient for large inputs.
+- :thumbsdown: Using recursion results into an exponential time complexity and might not be efficient for large inputs.
 
 2. Dynamic Programming
 - This is a way better option to optimize the program. It avoids 
