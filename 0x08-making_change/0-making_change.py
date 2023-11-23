@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-'''
+"""
 The making change problem:
   This module contains the function makeChange, that solves the
   making change problem dynamically.
-'''
+"""
 
 
 def makeChange(coins, total):
@@ -23,6 +23,9 @@ def makeChange(coins, total):
     if total <= 0:
         return 0
 
+    # sort coins in descending order for optimization
+    coins.sort(reverse=True)
+
     # Create a list to store the fewest number of coins needed to make change
     # for each value from 0 to total
     change = [0] + [float('inf')] * total
@@ -30,9 +33,8 @@ def makeChange(coins, total):
     # For each value from 1 to total, determine the fewest number of coins
     # needed to make change
     for i in range(1, total + 1):
-        for coin in coins:
-            if coin <= i:
-                change[i] = min(change[i], change[i - coin] + 1)
+        for coin in [c for c in coins if c <= i]:
+            change[i] = min(change[i], change[i - coin] + 1)
 
     # If change[total] is still infinity, then total cannot be met by any
     # number of coins
