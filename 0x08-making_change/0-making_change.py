@@ -19,26 +19,25 @@ def makeChange(coins, total):
         if total is 0 or less, return 0
         if total cannot be met by any number of coins, return -1
     """
+    # Initialize dp array with total+1 as we can't have more coins than total+1
+    dp = [total + 1] * (total + 1)
 
-    if total <= 0:
-        return 0
+    # When total is 0, 0 coins are needed
+    dp[0] = 0
 
-    # sort coins in descending order for optimization
-    coins.sort(reverse=True)
-
-    # Create a list to store the fewest number of coins needed to make change
-    # for each value from 0 to total
-    change = [0] + [float('inf')] * total
-
-    # For each value from 1 to total, determine the fewest number of coins
-    # needed to make change
+    # Loop through all totals from 1 to total
     for i in range(1, total + 1):
-        for coin in [c for c in coins if c <= i]:
-            change[i] = min(change[i], change[i - coin] + 1)
+        # For each coin value
+        for j in range(len(coins)):
+            # If the coin value is less than or equal to the total
+            if coins[j] <= i:
+                # Update the dp value for this total
+                dp[i] = min(dp[i], dp[i - coins[j]] + 1)
 
-    # If change[total] is still infinity, then total cannot be met by any
-    # number of coins
-    if change[total] == float('inf'):
+    # If the dp value for total is still total+1,
+    # then we can't make the total with the coins
+    if dp[total] == total + 1:
         return -1
 
-    return change[total]
+    # Return the dp value for total
+    return dp[total]
