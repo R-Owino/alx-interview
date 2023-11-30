@@ -22,3 +22,9 @@ The approach:
 - For each land cell, check the neighbor cells. If a neighbor is land, decrement by 1; if water or outside the grid boundaries, do nothing.
 - Continue the process for all the cells.
 - Return the perimeter tracker variable.
+
+Example:
+```
+remmy@remmy:~/alx-interview/0x09-island_perimeter$ python3 0-main.py 
+12
+```
