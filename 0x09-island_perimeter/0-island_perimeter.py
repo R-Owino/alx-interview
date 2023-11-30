@@ -4,6 +4,7 @@ This module contains a function island_perimeter that returns
 the perimeter of the island described in grid
 """
 
+
 def island_perimeter(grid):
     """
     returns the perimeter of the island described in grid
@@ -14,16 +15,19 @@ def island_perimeter(grid):
     Returns:
         perimeter (int): perimeter of the island described in grid
     """
+    # keep track of perimeter
     perimeter = 0
+
+    # iterate thru each cell in the grid
     for row in range(len(grid)):
         for col in range(len(grid[row])):
-            if grid[row][col] is 1:
-                if row is 0 or grid[row - 1][col] is 0:
-                    perimeter += 1
-                if col is 0 or grid[row][col - 1] is 0:
-                    perimeter += 1
-                if col is len(grid[row]) - 1 or grid[row][col + 1] is 0:
-                    perimeter += 1
-                if row is len(grid) - 1 or grid[row + 1][col] is 0:
-                    perimeter += 1
+            # if cell is land
+            if grid[row][col] == 1:
+                perimeter += 4
+                # check neighboring cells
+                if row > 0 and grid[row - 1][col] == 1:
+                    perimeter -= 2
+                if col > 0 and grid[row][col - 1] == 1:
+                    perimeter -= 2
+
     return perimeter
