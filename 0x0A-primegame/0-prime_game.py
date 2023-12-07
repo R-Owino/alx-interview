@@ -26,9 +26,9 @@ def isWinner(x, nums):
         Returns:
             bool: True if n is a prime, False otherwise
         """
-        if n <= 1:
+        if n < 2:
             return False
-        for i in range(2, n):
+        for i in range(2, int(n ** 0.5) + 1):
             if n % i == 0:
                 return False
         return True
@@ -45,23 +45,25 @@ def isWinner(x, nums):
             int: the count of prime numbers
         """
         count = 0
-        for num in range(2, n):
+        for num in range(2, n + 1):
             if isPrime(num):
                 count += 1
         return count
 
     # play the game for each round and count wins
-    winner = None
-    for i in range(x):
-        if countPrimes(nums[i]) % 2 == 0:
-            winner = "Maria"
+    maria_wins = 0
+    ben_wins = 0
+    for n in nums:
+        primes = countPrimes(n)
+        if primes % 2 == 0:
+            ben_wins += 1
         else:
-            winner = "Ben"
-    return winner
+            maria_wins += 1
 
     # determine overall winner
-    if winner == "Maria":
-        return "Maria"
+    if maria_wins > ben_wins:
+        return 'Maria'
+    elif ben_wins > maria_wins:
+        return 'Ben'
     else:
-        return "Ben"
-    return None
+        return None
