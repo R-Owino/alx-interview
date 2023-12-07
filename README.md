@@ -9,3 +9,5 @@
 7. Star Wars API
 8. Rotate 2D matrix
 9. Making Change
+10. Island perimeter
+11. Prime Game
