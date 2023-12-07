@@ -14,7 +14,7 @@ Problem instructions:
 - Return name of the player that won most rounds
 - Return `None` if winner cannot be determined
 
-Example:
+### Example:
 - x = 3, nums = [4, 5, 1]
 
 First round: 4
@@ -32,6 +32,16 @@ Third round: 1
 - Ben wins because there are no prime numbers for Maria to choose
 
 **Result: Ben has the most wins**
+
+### The approach:
+1. Prime Sieve: First, generate all prime numbers up to `n`.
+
+2. Game Play: Maria and Ben take turns to pick a prime number and remove that number and its multiples. The player who cannot make a move loses the game.
+
+3. Optimal Strategy: Since both players play optimally, they would always choose the smallest available prime number. This is because choosing a larger prime number would potentially leave more options for the opponent in the next turn.
+
+4. Determine the Winner: If the number of primes is even, Ben wins, because Maria will be forced to pick the last prime number. If the number of primes is odd, Maria wins, because she can always mirror Ben’s moves and ensure she picks the last prime number.
+
 
 ### Running the code:
 ```
